@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const authRoute = require('./auth');
+const User = require('./Models/User'); // Replace with your User model
 
 const app = express();
 const secretKey = 'your_secret_key_here'; // Change this to a strong secret key
@@ -13,20 +15,36 @@ mongoose.connect('mongodb://localhost:27017/my_database', {
   useUnifiedTopology: true,
 });
 
-// Create a Mongoose schema for the user
-const userSchema = new mongoose.Schema({
-  name: String,
-  email: { type: String, unique: true },
-  phone: String,
-  password: String,
-});
-
-// Create a Mongoose model based on the schema
-const User = mongoose.model('User', userSchema);
-
 app.use(bodyParser.json());
 app.use(cors());
 
+app.post('/login', async (req, res) => {
+  try {
+    const name=req.body.username;
+    const password=req.body.password;
+
+    // Find the user by name
+    const user = await User.findOne({ name });
+    console.log(name);
+    if (!user) {
+      return res.json({ success: false, message: 'User not found' });
+    }
+
+    // Compare the provided password with the hashed password in the database
+    const isPasswordValid = (password==user.password);
+
+    if (!isPasswordValid) {
+      return res.json({ success: false, message: 'Invalid password' });
+    }
+
+    // User is authenticated, generate a JWT token or handle session
+
+    res.json({ success: true, message: 'Login successful' });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ success: false, message: 'An error occurred' });
+  }
+});
 // Registration endpoint
 app.post('/register', async (req, res) => {
   const { name, email, phone, password } = req.body;
