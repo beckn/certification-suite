@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import './styles.css';
 import Dashboard from './dashboard';
 import Login from './login'; // Import the Login component
+import { useAuth } from './AuthContext'; // Import AuthProvider
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -41,7 +42,6 @@ const RegistrationForm = () => {
     }
   };
   if (registrationStatus.isSuccess) {
-    setTimeout(10000)
     return <Navigate to="/login" />;
   }
   return (
@@ -82,24 +82,23 @@ const Logout = () => {
   return <Navigate to="/" />;
 };
 
+
 const App = () => {
-  const [authenticated, setAuthenticated] = useState(false); // Set to true for demonstration
+  const {user} = useAuth(); // Use the isAuthenticated state from AuthContext
+
 
   return (
     <Router>
       <Routes>
         <Route exact path="/" element=
-          {authenticated ? <Navigate to="/login" /> : <RegistrationForm />}>
+          {<RegistrationForm />}>
         </Route>
-        <Route path="/dashboard" element=
-          {authenticated ? <Dashboard /> : <Navigate to="/" />}>
-        </Route>
+        <Route path="/dashboard" element={user ? <Dashboard/> : <Navigate to="/login" />} />
         <Route path="/login" element=
-          {authenticated ? <Navigate to="/dashboard" /> : <Login />}>
+          {<Login />}>
         </Route>
         <Route path="/logout" component={Logout} />
       </Routes>
-      {/* ... Existing code for login message ... */}
     </Router>
   );
 };

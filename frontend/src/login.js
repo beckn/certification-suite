@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext'; // Import useAuth
 
 const Login = () => {
   const navigate = useNavigate();
+  const { user,login } = useAuth(); // Use the login function from AuthContext
 
   const [formData, setFormData] = useState({
     username: '',
@@ -18,8 +20,9 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post('http://localhost:5000/login', formData);
-        console.log(formData)
+
       if (response.data.success) {
+        login(formData)
         navigate('/dashboard'); // Redirect to the dashboard on successful login
       } else {
         alert('Login failed. Please check your credentials.');
