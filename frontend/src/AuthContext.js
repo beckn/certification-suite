@@ -8,7 +8,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Initialize with null
-
+  
   const login = (userData) => {
     // Perform successful login logic
     setUser(userData);
