@@ -5,6 +5,7 @@ import './styles.css';
 import Dashboard from './dashboard';
 import Login from './login'; // Import the Login component
 import { useAuth } from './AuthContext'; // Import AuthProvider
+// require('dotenv').config();
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({

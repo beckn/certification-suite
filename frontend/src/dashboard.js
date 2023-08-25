@@ -3,13 +3,8 @@ import './dashboard.css'; // Import the dashboard-specific CSS
 import { useAuth } from './AuthContext'; // Import useAuth
 import { Button, Modal, Form } from 'react-bootstrap';
 import { sendPostRequest } from './helper-request'; // Import the updated helper function
-import { initRequestBody } from './initRequest';
-import { selectRequestBody } from './selectRequest';
-import { confirmRequestBody } from './confirmRequest';
-import { trackRequestBody } from './trackRequest';
-import { supportRequestBody } from './supportRequest';
-import { cancelRequestBody } from './cancelRequest';
-import { statusRequestBody } from './statusRequest';
+import { initRequestBody,selectRequestBody,confirmRequestBody,trackRequestBody,supportRequestBody,cancelRequestBody,statusRequestBody} from './requestBodies';
+
 
 const Dashboard = () => {
   const [field1, setField1] = useState('');
@@ -33,55 +28,39 @@ const Dashboard = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    if (isValidUrl) {
-      // Perform action for valid URL
-      console.log('Valid URL:', textInput);
-    } else {
-      console.log('Invalid URL:', textInput);
-    }
-  };
+  const appendages = ['init', 'select', 'confirm', 'track', 'support', 'cancel', 'status'];
 
   const handleHttpRequests = async (event) => {
-    const appendages = ['init', 'select', 'confirm', 'track', 'support', 'cancel', 'status'];
     event.preventDefault()
-    openModal();
+    const requestBodyMap = {
+      init: initRequestBody,
+      select: selectRequestBody,
+      confirm: confirmRequestBody,
+      track: trackRequestBody,
+      support: supportRequestBody,
+      cancel: cancelRequestBody,
+      status: statusRequestBody,
+    };
 
     try {
-      const requests = appendages.map(async (appendage, index) => {
-        const requestBodyMap = {
-          init: initRequestBody,
-          select: selectRequestBody,
-          confirm: confirmRequestBody,
-          track: trackRequestBody,
-          support: supportRequestBody,
-          cancel: cancelRequestBody,
-          status: statusRequestBody,
-        };
+      const requests = appendages.map(async (appendage) => {
+  
         try {
           // Use the helper function to send a POST request with request body
-          await sendPostRequest(textInput, appendage, requestBodyMap[appendage]);
+          const response= await sendPostRequest(textInput, appendage, requestBodyMap[appendage]);
+          return response.status; // Return the status code
 
           // Update status based on success
-          setRequestStatuses((prevStatuses) => {
-            const newStatuses = [...prevStatuses];
-            newStatuses[index] = 'Success';
-            return newStatuses;
-          });
-        } catch (error) {
-          // Update status based on failure
-          setRequestStatuses((prevStatuses) => {
-            const newStatuses = [...prevStatuses];
-            newStatuses[index] = 'Failure';
-            return newStatuses;
-          });
+        }  catch (error) {
+          return error.response ? error.response.status : 500; // Return error status or 500
+        
         }
       });
+      const responses = await Promise.all(requests);
+      const individualStatuses = responses.map((status) => (status >= 200 && status < 300 ? 'Success' : 'Failure'));
 
-      await Promise.all(requests);
-
+      // Determine overall status based on all responses
+      setRequestStatuses(individualStatuses);
       openModal();
     } catch (error) {
       console.error('HTTP Request Error:', error);
@@ -146,7 +125,7 @@ const Dashboard = () => {
                 <Modal.Body>
                   <ul>
                     {requestStatuses.map((status, index) => (
-                      <li key={index}>{`Request ${index + 1}: ${status}`}</li>
+                      <li key={index}>{`${appendages[index]}: ${status}`}</li>
                     ))}
                   </ul>
                 </Modal.Body>
