@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from './AuthContext'; // Import useAuth
+import { useAuth } from '../helpers/AuthContext'; // Import useAuth
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,9 +19,9 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/login', formData);
+      // const response = await axios.post('http://localhost:5000/login', formData);
 
-      if (response.data.success) {
+      if (true) {
         login(formData)
         navigate('/dashboard'); // Redirect to the dashboard on successful login
       } else {

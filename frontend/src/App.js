@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
-import './styles.css';
-import Dashboard from './dashboard';
-import Login from './login'; // Import the Login component
-import { useAuth } from './AuthContext'; // Import AuthProvider
+import './styles/styles.css';
+import Dashboard from './pages/dashboard';
+import Login from './pages/login'; // Import the Login component
+import { useAuth } from './helpers/AuthContext'; // Import AuthProvider
 // require('dotenv').config();
 
 const RegistrationForm = () => {
