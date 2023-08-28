@@ -3,8 +3,12 @@ import '../styles/dashboard.css'; // Import the dashboard-specific CSS
 import { useAuth } from '../helpers/AuthContext'; // Import useAuth
 import { Button, Modal, Form } from 'react-bootstrap';
 import { sendPostRequest } from '../helpers/helper-request'; // Import the updated helper function
-import { initRequestBody,selectRequestBody,confirmRequestBody,trackRequestBody,supportRequestBody,cancelRequestBody,statusRequestBody} from '../helpers/requestBodies';
-
+import { initRequestBody,selectRequestBody,confirmRequestBody,statusRequestBody} from '../helpers/requestBodies';
+import { confirmResponse } from '../Responseformats/confirmResponse';
+import { selectResponse } from '../Responseformats/selectResponse';
+import { statusResponse } from '../Responseformats/statusResponse'; 
+import {initresp} from '../Responseformats/initResponse';
+import { validateResponseWithFormat } from '../helpers/format';
 
 const Dashboard = () => {
   const [field1, setField1] = useState('');
@@ -13,7 +17,7 @@ const Dashboard = () => {
   const [textInput, setTextInput] = useState('');
   const [isValidUrl, setIsValidUrl] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [requestStatuses, setRequestStatuses] = useState(Array(6).fill('Pending'));
+  const [requestStatuses, setRequestStatuses] = useState(Array(4).fill('Pending'));
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
 
@@ -28,46 +32,49 @@ const Dashboard = () => {
   };
 
   // Handle form submission
-  const appendages = ['init', 'select', 'confirm', 'track', 'support', 'cancel', 'status'];
+  const appendages = ['init', 'select', 'confirm', 'status'];
 
   const handleHttpRequests = async (event) => {
     event.preventDefault()
     const requestBodyMap = {
-      init: initRequestBody,
-      select: selectRequestBody,
-      confirm: confirmRequestBody,
-      track: trackRequestBody,
-      support: supportRequestBody,
-      cancel: cancelRequestBody,
-      status: statusRequestBody,
+      init: [initRequestBody,initresp],
+      select: [selectRequestBody,selectResponse],
+      confirm: [confirmRequestBody,confirmResponse],
+      status: [statusRequestBody,statusResponse],
     };
 
     try {
       const requests = appendages.map(async (appendage) => {
-  
+        openModal();
+
         try {
           // Use the helper function to send a POST request with request body
-          const response= await sendPostRequest(textInput, appendage, requestBodyMap[appendage]);
-          return response.status; // Return the status code
+          const response= await sendPostRequest(textInput, appendage, requestBodyMap[appendage][0]);
+          const statusReq= validateResponseWithFormat(response['responses'][0],requestBodyMap[appendage][1]);
+          console.log(requestBodyMap[appendage][1]);
+          return statusReq; // Return the status code
 
           // Update status based on success
         }  catch (error) {
-          return error.response; // Return error status or 500
+          return error; // Return error status or 500
         
         }
       });
       const responses = await Promise.all(requests);
-      console.log(responses)
       
-      setTimeout(function(){
-        const individualStatuses = responses.map((status) => (console.log(status) && status < 500 ? 'Success' : 'Failure'));
+      const individualStatuses = responses.map((status1) => (status1 ? 'Success' : 'Failure'));
         
       // Determine overall status based on all responses
       setRequestStatuses(individualStatuses);
       openModal();
+      const areAllTrue = (array) => {
+        return array.every(element => element === true);
+      };      
+      if(areAllTrue)
+      alert("You have been Certified")
+      else
+      alert("You have failed to be certified")
 
-      },10000);
-      // openModal();
     } catch (error) {
       console.error('HTTP Request Error:', error);
     }
@@ -79,7 +86,7 @@ const Dashboard = () => {
         {user  ? (
           <><header className="dashboard-header">
             <div className="user-info">Welcome, {user.username}!</div>
-            <a className="logout-link" href="/logout">Logout</a>
+            <a className="logout-link" onClick={logout} href="/logout">Logout</a>
           </header><main className="dashboard-content">
               <h1 className="dashboard-heading">Dashboard</h1>
               <form className="dashboard-form">
@@ -100,7 +107,7 @@ const Dashboard = () => {
                   <label className="form-label">Network:</label>
                   <select
                     className="form-select"
-                    value={field1}
+                    value={field2}
                     onChange={e => setField2(e.target.value)}
                   >
                     <option value="">Select an option</option>

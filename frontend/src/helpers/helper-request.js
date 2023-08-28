@@ -2,17 +2,17 @@
 import axios from 'axios';
 
 export const sendPostRequest = async (url, appendage, requestBody) => {
-
-    const test = axios.post(url+'/'+appendage,requestBody,{
-      headers: {
+try{
+  const response = await axios.post(url + '/' + appendage, requestBody, {
+    headers: {
       'Content-Type': 'application/json'
-    }})
-    .then(function (response) {
-      console.log(response);
-      return test;
-  })
-   //rather than just localhost:8000/test
-   .catch(function (error) {
-    console.log(error);
-});
+    }
+  });
+
+  console.log(response.data['responses'][0]); // Output the response data
+  return response.data; // Return the response data
+} catch (error) {
+  console.log(error);
+  throw error; // Re-throw the error to be caught by the caller
+}
 };
