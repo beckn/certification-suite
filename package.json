@@ -10,10 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@transmute/ed25519-key-pair": "^0.7.0-unstable.81",
+    "@transmute/ed25519-signature-2018": "^0.7.0-unstable.81",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "express": "^4.18.2",
+    "jsonld-signatures": "^11.2.1",
     "jsonwebtoken": "^9.0.1",
-    "mongoose": "^7.4.1"
+    "mongoose": "^7.4.1",
+    "vc-js": "^0.6.4"
   }
 }
