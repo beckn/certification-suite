@@ -1,7 +1,7 @@
 const BAP_ID="beckn-test-22";
-const BAP_URI="https://6bfa-2402-e280-214e-38a-ec1c-9dc8-6501-1d13.ngrok-free.app";
+const BAP_URI="https://d929-2401-4900-1cb8-9ecd-30c7-52a6-949d-b8b6.ngrok-free.app";
 const BPP_ID="beckn-test-23";
-const BPP_URI="https://b559-2402-e280-214e-38a-ec1c-9dc8-6501-1d13.ngrok-free.app";
+const BPP_URI="https://63d6-2401-4900-1cb8-9ecd-30c7-52a6-949d-b8b6.ngrok-free.app";
 
 export const cancelRequestBody={
         context: {

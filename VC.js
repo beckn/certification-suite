@@ -27,25 +27,25 @@ const generateKeyPair = async () => {
 }
 app.post('/issue-vc', async (req, res) => {
   try {
-    const { orgdomain,organizationId,name,uri } = req.body;
+    const { orgdomain,coreVersion,name,uri,network } = req.body;
     const keyPair = await generateKeyPair();
 
     // Create a Verifiable Credential
     const VerifiableCredential = await vc.issue({
       credential: {
-        '@context': ['https://www.w3.org/2018/credentials/v1'],
+        '@context': ["https://www.w3.org/2018/credentials/v1",
+        "/vc-context.json"],
         type: ['VerifiableCredential'],
         issuer: keyPair.controller,
         issuanceDate: new Date().toISOString(),
         credentialSubject: {
-          id: organizationId,
-          type:"Compliance",
-          membership: {
-            organization: "Example Club",
-            membershipStartDate: "2023-01-15",
-            membershipEndDate: "2023-12-31"
-          }
-        },
+            id: name,
+            type: "Compliance",
+            network: network,
+            domain: orgdomain,
+            base_endpoint:uri,
+            core_version:coreVersion
+          },
       },
       suite: new Ed25519Signature2018({
         key: keyPair,
