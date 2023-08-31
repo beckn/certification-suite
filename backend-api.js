@@ -1,21 +1,22 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const authRoute = require('./auth');
-const User = require('./Models/User'); // Replace with your User model
-
+import express from 'express';
+import pkg from 'body-parser';
+const { json } = pkg;
+import * as jsonwebtoken from 'jsonwebtoken';
+import cors from 'cors';
+import { connect } from 'mongoose';
+import authRoute from './auth.js';
+import User from './Models/User.js'; // Replace with your User model
+const {findOne}=User;
 const app = express();
 const secretKey = 'your_secret_key_here'; // Change this to a strong secret key
 
 // Connect to MongoDB (change the connection URL to your own MongoDB instance)
-mongoose.connect('mongodb://localhost:27017/my_database', {
+connect('mongodb://localhost:27017/my_database', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-app.use(bodyParser.json());
+app.use(json());
 app.use(cors());
 
 app.post('/login', async (req, res) => {
@@ -24,7 +25,7 @@ app.post('/login', async (req, res) => {
     const password=req.body.password;
 
     // Find the user by name
-    const user = await User.findOne({ name });
+    const user = await findOne({ name });
     console.log(name);
     if (!user) {
       return res.json({ success: false, message: 'User not found' });
@@ -56,7 +57,7 @@ app.post('/register', async (req, res) => {
 
   try {
     // Check if the email already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await findOne({ email });
     if (existingUser) {
       return res.status(409).json({ message: 'Email already registered.' });
     }
@@ -66,7 +67,7 @@ app.post('/register', async (req, res) => {
     await newUser.save();
 
     // Generate JWT token
-    const token = jwt.sign({ email }, secretKey, { expiresIn: '1h' });
+    const token = jsonwebtoken.sign({ email }, secretKey, { expiresIn: '1h' });
 
 
     res.status(200).json({ message: 'Registration successful.' , token});

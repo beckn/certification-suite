@@ -1,55 +1,72 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const {Ed25519KeyPair}=require('@transmute/ed25519-key-pair')
-const {Ed25519Signature2018}=require('@transmute/ed25519-signature-2018')
-
-const vc = require('vc-js');
-const cors = require('cors');
-
+import express from 'express';
+import pkg from 'body-parser';
+const { json } = pkg;
+import {Ed25519VerificationKey2020} from
+  '@digitalbazaar/ed25519-verification-key-2020';
+import {Ed25519Signature2018} from '@digitalbazaar/ed25519-signature-2018';
+import {issue,verifyCredential} from '@digitalbazaar/vc';
+import cors from 'cors';
 const app = express();
-app.use(bodyParser.json());
+app.use(json());
 app.use(cors());
+
+
+const customContext = {
+    "@version": 1.1,
+    "id": "@id",
+    "type": "@type",
+    "vc": "http://www.w3.org/2018/credentials#",
+    "url":"https://schema.org/URL",
+    // "network": "vc:network",
+    "domain": "https://schema.org/category",
+    "CredentialSubject": "vc:CredentialSubject",
+    "version":"https://schema.org/version",
+  };
+
+
 // Generate issuer's key pair (private and public keys)
 let sharedKeyPair = null;
 
 // Function to generate the key pair (only if not already generated)
 const generateKeyPair = async () => {
     if (!sharedKeyPair) {
-      sharedKeyPair = await Ed25519KeyPair.generate({secureRandom: () => {
-        return Buffer.from(
-          '4f66b355aa7b0980ff901f2295b9c562ac3061be4df86703eb28c612faae6578',
-          'hex'
-        );
-    },
-    });
-    return sharedKeyPair;
+      sharedKeyPair = await Ed25519VerificationKey2020.generate();
   };
+  return sharedKeyPair;
 }
+
 app.post('/issue-vc', async (req, res) => {
   try {
-    const { orgdomain,coreVersion,name,uri,network } = req.body;
-    const keyPair = await generateKeyPair();
+    console.log(req.body);
+    const { orgdomain,coreVersion,uri,network } = req.body;
 
     // Create a Verifiable Credential
-    const VerifiableCredential = await vc.issue({
+    const keyPair = await Ed25519VerificationKey2020.generate({
+        secureRandom: () => {
+          return Buffer.from(
+            '4f66b355aa7b0980ff901f2295b9c562ac3061be4df86703eb28c612faae6578',
+            'hex'
+          );
+        },
+      });
+      console.log("aimm");
+      const suite = new Ed25519Signature2018({key: keyPair});
+      suite.verificationMethod="https://example.edu/issuers/keys/1";
+      const VerifiableCredential = await issue({
       credential: {
-        '@context': ["https://www.w3.org/2018/credentials/v1",
-        "/vc-context.json"],
+        '@context': ["https://www.w3.org/2018/credentials/v1",customContext],
         type: ['VerifiableCredential'],
-        issuer: keyPair.controller,
+        issuer: "https://example.edu/issuers/565049",
         issuanceDate: new Date().toISOString(),
         credentialSubject: {
-            id: name,
-            type: "Compliance",
-            network: network,
+            // type: "Compliance",
             domain: orgdomain,
-            base_endpoint:uri,
-            core_version:coreVersion
+            // network: network,
+            version:coreVersion,
+            url:uri
+            // created: new Date().toISOString()
           },
-      },
-      suite: new Ed25519Signature2018({
-        key: keyPair,
-      }),
+      },suite
     });
 
     return res.json({ verifiableCredential: VerifiableCredential });
@@ -64,7 +81,7 @@ app.post('/verify-vc', async (req, res) => {
     const { verifiableCredential } = req.body;
 
     // Verify the Verifiable Credential
-    const verificationResult = await vc.verifyCredential({
+    const verificationResult = await verifyCredential({
       credential: verifiableCredential,
       suite: new Ed25519Signature2018({
         key: keyPair.publicKey,

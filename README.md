@@ -4,6 +4,7 @@
 - Run `node backend-api.js` to start backend server
 - Spin up a MongoDB local instance with port 27017 and database name 'my_database'
 - By default the API will work on port 5000
+- Run `node VC.js` to start the VC Server
 
 # Frontend
 
@@ -12,7 +13,9 @@
 
 ![](Images\Registration.png)
 
-![](Images\token.png)
+![](Images\login.png)
+
+![](Images\dashboard.png)
 
 # certification-suite
 This product allows various beckn-enabled applications to be certified and tested

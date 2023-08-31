@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 // const bcrypt = require('bcrypt');
-const User = require('./Models/User'); // Replace with your User model
+import User from './Models/User.js'; // Replace with your User model
 
 // POST /api/login
 router.post('/login', async (req, res) => {
@@ -31,4 +31,4 @@ router.post('/login', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
