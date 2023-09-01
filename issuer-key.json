@@ -1,8 +1,0 @@
-{
-    "id": "did:example:issuer#key1",
-    "type": "Ed25519VerificationKey2018",
-    "controller": "did:example:issuer",
-    "publicKeyBase58": "PUBLIC_KEY_HERE",
-    "privateKeyBase58": "PRIVATE_KEY_HERE"
-  }
-  

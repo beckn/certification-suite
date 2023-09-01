@@ -4,11 +4,34 @@ const { json } = pkg;
 import * as jsonwebtoken from 'jsonwebtoken';
 import cors from 'cors';
 import mongoose,{connect} from 'mongoose';
-import authRoute from './auth.js';
-import User from './Models/User.js'; // Replace with your User model
-const {findOne}=User;
+// import User from './Models/User.js'; // Replace with your User model
+// const {findOne}=User;
 const app = express();
 const secretKey = 'your_secret_key_here'; // Change this to a strong secret key
+
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  phone: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+});
+
+ const User = mongoose.model('User', userSchema);
 
 // Connect to MongoDB (change the connection URL to your own MongoDB instance)
 mongoose.connect('mongodb://localhost:27017/my_database', {
@@ -48,34 +71,31 @@ app.post('/login', async (req, res) => {
 });
 // Registration endpoint
 app.post('/register', async (req, res) => {
-  // const { name, email, phone, password } = req.body;
-  // console.log("inside");
-  // // Simple validation (you should add more robust validation in a real application)
-  // if (!name || !email || !phone || !password) {
-  //   return res.status(400).json({ message: 'Please provide all fields.' });
-  // }
+  const { name, email, phone, password } = req.body;
+  console.log("inside");
+  // Simple validation (you should add more robust validation in a real application)
+  if (!name || !email || !phone || !password) {
+    return res.status(400).json({ message: 'Please provide all fields.' });
+  }
 
   try {
-  //   // Check if the email already exists
-  //   const existingUser = await User.findOne({ email });
-  //   console.log("inside");
+    // Check if the email already exists
+    const existingUser = await User.findOne({ email });
+    console.log("inside");
 
-  //   if (existingUser) {
-  //     return res.status(409).json({ message: 'Email already registered.' });
-  //   }
-  //   console.log("inside");
-  //   // res.status(200).json({ message: 'Registration successful.' , token});
+    if (existingUser) {
+      return res.status(409).json({ message: 'Email already registered.' });
+    }
+    console.log("inside");
 
-  //   // // Create a new user
-  //   // const newUser = new User({ name, email, phone, password });
-  //   // console.log("inside");
+    // Create a new user
+    const newUser = new User({ name, email, phone, password });
+    console.log("inside");
 
-  //   // await newUser.save();
-  //   // console.log("inside");
+    await newUser.save();
 
-  //   // // Generate JWT token
-  //   // const token = jsonwebtoken.sign({ email }, secretKey, { expiresIn: '1h' });
-
+    // Generate JWT token
+    const token = jsonwebtoken.sign({ email }, secretKey, { expiresIn: '1h' });
 
     res.status(200).json({ message: 'Registration successful.'});
   } catch (error) {
