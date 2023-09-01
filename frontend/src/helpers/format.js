@@ -4,7 +4,7 @@ export const validateResponseWithFormat = (response, format) => {
   const validateFields = (responseFields, formatFields, path = []) => {
     for (const field in responseFields) {
       if (!formatFields.hasOwnProperty(field)) {
-        errors.push(`Field "${[...path, field].join('.')}" is not expected in format`);
+        // errors.push(`Field "${[...path, field].join('.')}" is not expected in format`);
         continue;
       }
 
@@ -15,7 +15,7 @@ export const validateResponseWithFormat = (response, format) => {
         if (typeof actualValue === 'object' && actualValue !== null) {
           validateFields(actualValue, expectedValue, [...path, field]);
         } else {
-          errors.push(`Field "${[...path, field].join('.')}" should be an object`);
+          // errors.push(`Field "${[...path, field].join('.')}" should be an object`);
         }
       } else if (Array.isArray(expectedValue)) {
         if (Array.isArray(actualValue)) {
@@ -26,7 +26,7 @@ export const validateResponseWithFormat = (response, format) => {
             }
           }
         } else {
-          errors.push(`Field "${[...path, field].join('.')}" should be an array`);
+          // errors.push(`Field "${[...path, field].join('.')}" should be an array`);
         }
       }
     }

@@ -38,7 +38,7 @@ const generateKeyPair = async () => {
 app.post('/issue-vc', async (req, res) => {
   try {
     console.log(req.body);
-    const { orgdomain,coreVersion,uri,network } = req.body;
+    const { orgdomain,coreVersion,uri } = req.body;
 
     // Create a Verifiable Credential
     const keyPair = await Ed25519VerificationKey2020.generate({

@@ -36,6 +36,7 @@ const RegistrationForm = () => {
       });
 
     } catch (error) {
+      console.log(error);
       setRegistrationStatus({
         message: 'Registration failed. Please try again.',
         isSuccess: false,
@@ -52,6 +53,7 @@ const RegistrationForm = () => {
           {registrationStatus.message}
         </div>
       )}
+              <a className="login" href="/login">Login</a>
 
 <h1>Registration Form</h1>
 
@@ -80,7 +82,7 @@ const RegistrationForm = () => {
 
 const Logout = () => {
   // Implement logout logic, clear token from storage, etc.
-  return <Navigate to="/" />;
+  return <Navigate to="/login" />;
 };
 
 

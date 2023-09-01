@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/dashboard.css'; // Import the dashboard-specific CSS
 import { useAuth } from '../helpers/AuthContext'; // Import useAuth
-import { Button, Modal, Form } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import { sendPostRequest } from '../helpers/helper-request'; // Import the updated helper function
 import { initRequestBody,selectRequestBody,confirmRequestBody,statusRequestBody} from '../helpers/requestBodies';
 import { confirmResponse } from '../Responseformats/confirmResponse';
@@ -38,13 +38,12 @@ const Dashboard = () => {
 
   // Handle form submission
   const appendages = ['init', 'select', 'confirm', 'status'];
-  
-
      vcData={
       orgdomain:field1,
-      organizationId:user.username,
-      city:"std:830",
-      uri:textInput
+      // organizationId:user.username,
+      // city:"std:830",
+      uri:textInput,
+      coreVersion:"0.9.4"
     }
     const handleIssueVC = async () => {
       try {
@@ -54,6 +53,8 @@ const Dashboard = () => {
         const response = await axios.post('http://localhost:8000/issue-vc',vcData);
         if (response.status === 200) {
           setVCIssued(true);
+          setStatusVerified(true);
+          alert("VC has been issued. Both QR code and following are the VC",response)
         } else {
           console.log('VC issuance failed');
         }
@@ -112,11 +113,10 @@ const Dashboard = () => {
   };
     return (
       <>
+
       <Modal size="lg" dialogClassName="custom-modal" show={showModal} onHide={closeModal}>
         <Modal.Header>
           <Modal.Title>Endpoint Request Statuses</Modal.Title>
-          {verified && <VCQRCode vcData={vcData} />}
-
         </Modal.Header>
         <Modal.Body>
           <ul>
@@ -193,6 +193,8 @@ const Dashboard = () => {
                 <button type='submit' disabled={!isValidUrl} onClick={handleHttpRequests}>
                   Submit
                 </button>
+                {verified && <VCQRCode vcData={vcData} />}
+
               </form>
             </main>
 </>
