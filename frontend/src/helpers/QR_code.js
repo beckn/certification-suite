@@ -6,8 +6,20 @@ const VCQRCode = ({ vcData }) => {
 
   return (
     <div>
-      <h2>Verifiable Credential QR Code</h2>
-      <QRCode value={vcJSON} />
+            <QRCode value={vcJSON}/>
+
+      <button
+            onClick={() => {
+              // Open the QR code in a new tab
+              const qrCodeImage = document.querySelector('canvas').toDataURL('image/png');
+              const newTab = window.open();
+              newTab.document.write('<img src="' + qrCodeImage + '" />');
+              newTab.document.write('<p>' + vcJSON + '<p/>');
+            }}
+          >
+      See More..
+          </button>
+
     </div>
   );
 };

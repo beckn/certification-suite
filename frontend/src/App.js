@@ -4,6 +4,7 @@ import axios from 'axios';
 import './styles/styles.css';
 import Dashboard from './pages/dashboard';
 import Login from './pages/login'; // Import the Login component
+import VerifyVCPage from './pages/verifyVC';
 import { useAuth } from './helpers/AuthContext'; // Import AuthProvider
 // require('dotenv').config();
 
@@ -97,10 +98,9 @@ const App = () => {
           {<RegistrationForm />}>
         </Route>
         <Route path="/dashboard" element={user ? <Dashboard/> : <Navigate to="/login" />} />
-        <Route path="/login" element=
-          {<Login />}>
-        </Route>
+        <Route path="/login" element={<Login />}></Route>
         <Route path="/logout" component={Logout} />
+        <Route path="/verifyvc" element={<VerifyVCPage/>} />
       </Routes>
     </Router>
   );

@@ -72,7 +72,6 @@ app.post('/login', async (req, res) => {
 // Registration endpoint
 app.post('/register', async (req, res) => {
   const { name, email, phone, password } = req.body;
-  console.log("inside");
   // Simple validation (you should add more robust validation in a real application)
   if (!name || !email || !phone || !password) {
     return res.status(400).json({ message: 'Please provide all fields.' });
@@ -81,21 +80,19 @@ app.post('/register', async (req, res) => {
   try {
     // Check if the email already exists
     const existingUser = await User.findOne({ email });
-    console.log("inside");
 
     if (existingUser) {
       return res.status(409).json({ message: 'Email already registered.' });
     }
-    console.log("inside");
 
     // Create a new user
     const newUser = new User({ name, email, phone, password });
-    console.log("inside");
+    console.log(newUser);
 
     await newUser.save();
 
     // Generate JWT token
-    const token = jsonwebtoken.sign({ email }, secretKey, { expiresIn: '1h' });
+    // const token = jsonwebtoken.sign({ email }, secretKey, { expiresIn: '1h' });
 
     res.status(200).json({ message: 'Registration successful.'});
   } catch (error) {

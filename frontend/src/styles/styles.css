@@ -1,95 +1,193 @@
 body {
+
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
+
+  display: block;
+
+    margin-left: auto;
+
+    margin-right: auto;
+
   background-color: #f5f5f5;
-  position: relative;
-  justify-content: center;
+
+  /* position: static;
+
+  justify-content: center; */
+
+ 
 
 }
+
 .disabled {
+
   opacity: 0.5;
+
   cursor: not-allowed;
-}
-.container {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
-  border-radius: 8px;
-  background-color: #ffffff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  position: relative;
-  justify-content: center;
 
 }
+
+.container {
+
+  max-width: 50%;
+
+  margin: 50px auto;
+
+  padding: 30px;
+
+  border-radius: 10px;
+
+  background-color: #ffffff;
+
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  /* display: flex;
+
+  flex-direction: column;
+
+  align-items: center; */
+
+}
+
+ 
 
 h1 {
+
   text-align: center;
+
   margin-bottom: 20px;
+
   color: #007bff;
+
 }
-/* 
+
+ 
+
 form {
+
   display: flex;
+
   flex-direction: column;
-} */
+
+  align-items: stretch;
+
+}
+
+ 
 
 .form-group {
+
   margin-bottom: 20px;
+
 }
+
+ 
 
 label {
+
   font-weight: bold;
+
   margin-bottom: 5px;
-  /* display: block; */
+
+  display: inline;
+
   color: #333;
+
 }
+
+ 
 
 input {
-  width: 50%;
+
+ 
+
   padding: 10px;
+
   border: 1px solid #ccc;
+
   border-radius: 5px;
+
 }
+
+ 
 
 button {
-  width: 50%;
+
+  width: auto;
+
   padding: 10px;
+
   background-color: #007bff;
+
   color: #fff;
+
   border: none;
+
   border-radius: 5px;
+
   cursor: pointer;
+
   position: relative;
+
   transition: background-color 0.2s ease-in-out;
+
   justify-content: center;
+
   align-self: center;
+
 }
+
+ 
 
 button:hover {
+
   background-color: #0056b3;
+
 }
+
+ 
 
 .message {
+
   color: #dc3545;
+
   text-align: center;
+
   margin-bottom: 10px;
+
 }
+
+ 
 
 .registration-message {
+
   margin: 10px;
+
   padding: 10px;
+
   border-radius: 5px;
+
   font-weight: bold;
+
   text-align: center;
+
 }
+
+ 
 
 .registration-message.success {
+
   background-color: #4caf50;
+
   color: white;
+
 }
 
+ 
+
 .registration-message.error {
+
   background-color: #f44336;
+
   color: white;
+
 }

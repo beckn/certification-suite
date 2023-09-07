@@ -15,6 +15,8 @@ import axios from 'axios';
 const Dashboard = () => {
   const [field1, setField1] = useState('');
   const [field2, setField2] = useState('');
+  const [field3, setField3] = useState('');
+
   const { user, logout } = useAuth();
   const [textInput, setTextInput] = useState('');
   const [isValidUrl, setIsValidUrl] = useState(true);
@@ -25,6 +27,8 @@ const Dashboard = () => {
   const closeModal = () => setShowModal(false);
   const [loading, setLoading] = useState(false);
   const [vcIssued, setVCIssued] = useState(false);
+  const [vcresponseData, setVcresponseData] = useState(''); // Initialize VC data as an empty string
+
   let vcData;
   // Handle input change
   const handleInputChange = (event) => {
@@ -51,6 +55,9 @@ const Dashboard = () => {
         console.log(vcData)
         // Replace 'your-vc-api-endpoint' with the actual API endpoint for issuing VC
         const response = await axios.post('http://localhost:8000/issue-vc',vcData);
+        console.log(response)
+        setVcresponseData(response.data)
+        console.log(vcresponseData);
         if (response.status === 200) {
           setVCIssued(true);
           setStatusVerified(true);
@@ -82,17 +89,16 @@ const Dashboard = () => {
           // Use the helper function to send a POST request with request body
           const response= await sendPostRequest(textInput, appendage, requestBodyMap[appendage][0]);
           const statusReq= validateResponseWithFormat(response['responses'][0],requestBodyMap[appendage][1]);
-          console.log(requestBodyMap[appendage][1]);
+          // console.log(requestBodyMap[appendage][1]);
+
           return statusReq; // Return the status code
 
           // Update status based on success
         }  catch (error) {
           return error; // Return error status or 500
-        
         }
       });
       const responses = await Promise.all(requests);
-      
       const individualStatuses = responses.map((status1) => (status1 ? 'Success' : 'Failure'));
         
       // Determine overall status based on all responses
@@ -100,7 +106,6 @@ const Dashboard = () => {
       const areAllTrue = (array) => {
         return array.every(element => element === true);
       };      
-      setStatusVerified()
       if(areAllTrue)
       alert("You have been Certified")
       else
@@ -114,7 +119,9 @@ const Dashboard = () => {
     return (
       <>
 
-      <Modal size="lg" dialogClassName="custom-modal" show={showModal} onHide={closeModal}>
+  <div className="dashboard-container">
+    
+  <Modal size="lg" dialogClassName="custom-modal" show={showModal} onHide={closeModal}>
         <Modal.Header>
           <Modal.Title>Endpoint Request Statuses</Modal.Title>
         </Modal.Header>
@@ -134,8 +141,6 @@ const Dashboard = () => {
               </button>
         </Modal.Footer>
       </Modal>
-
-  <div className="dashboard-container">
           {user ? (<>
             <header className="dashboard-header">
               <div className="user-info">Welcome, {user.username}!</div>
@@ -143,6 +148,17 @@ const Dashboard = () => {
             </header><main className="dashboard-content">
               <h1 className="dashboard-heading">Dashboard</h1>
               <form className="dashboard-form">
+              <div className="form-group">
+                  <label className="form-label">Platform:</label>
+                  <select
+                    className="form-select"
+                    value={field3}
+                    onChange={e => setField3(e.target.value)}
+                  >
+                    <option value="option2">BAP</option>
+                    <option value="option1">BPP</option>
+                  </select>
+                </div>
                 <div className="form-group">
                   <label className="form-label">Domain:</label>
                   <select
@@ -180,6 +196,7 @@ const Dashboard = () => {
                     <option value="option1">India</option>
                   </select>
                 </div>
+
                 <div className="form-group">
                   <label htmlFor="textInput">Base API endpoint</label>
                   <input
@@ -193,8 +210,7 @@ const Dashboard = () => {
                 <button type='submit' disabled={!isValidUrl} onClick={handleHttpRequests}>
                   Submit
                 </button>
-                {verified && <VCQRCode vcData={vcData} />}
-
+                {vcIssued && vcresponseData && <VCQRCode vcData={vcresponseData} />}
               </form>
             </main>
 </>

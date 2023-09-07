@@ -1,7 +1,7 @@
-// const BAP_ID="beckn-test-22";
-// const BAP_URI="https://d929-2401-4900-1cb8-9ecd-30c7-52a6-949d-b8b6.ngrok-free.app";
-// const BPP_ID="beckn-test-23";
-// const BPP_URI="https://63d6-2401-4900-1cb8-9ecd-30c7-52a6-949d-b8b6.ngrok-free.app";
+const BAP_ID="beckn-test-22";
+const BAP_URI="https://e544-2402-e280-214e-38a-9df-6a8d-b7ec-9301.ngrok-free.app";
+const BPP_ID="beckn-test-23";
+const BPP_URI="https://39f4-2402-e280-214e-38a-9df-6a8d-b7ec-9301.ngrok-free.app";
 
 export const cancelRequestBody={
         context: {
