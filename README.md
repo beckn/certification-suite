@@ -1,4 +1,12 @@
-# Backend API
+# Beckn Certification Suite
+
+## About Project
+The Beckn certification suite project aims to create a testing and certification tool for various platforms that implement beckn protocol across multiple sectors an various regions. Upon successful certification, the platform issues a Verifiable Credential that can be electronically verified by a network registry with instantaneous registration and subscription of the platform on the network								
+
+## Setup Instructions
+
+
+### Backend API
 
 - Run `npm i` to install the dependencies for the backend repo
 - Run `node backend-api.js` to start backend server
@@ -7,10 +15,12 @@
 - Run `node VC.js` to start the VC Server
 - Modify the Beckn Protocol server details in `/frontend/src/helpers/requestBodies.js`
 
-# Frontend
+### Frontend
 
 - Navigate to folder 'frontend' using `cd frontend` from root folder
 - Run `npm start` to launch the frontend
+
+## Images
 
 ![](Images\Registration.png)
 
@@ -18,6 +28,6 @@
 
 ![](Images\dashboard.png)
 
-# certification-suite
+<!-- # certification-suite
 
-This product allows various beckn-enabled applications to be certified and tested
+This product allows various beckn-enabled applications to be certified and tested -->
