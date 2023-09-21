@@ -29,22 +29,23 @@ To get started with QRBeckn, follow these steps:
 
 ## Setup Instructions
 
-Please Setup [Beckn-Protocol-server](https://github.com/beckn/protocol-server/blob/master/setup.md), [Beckn-Sandbox](https://github.com/beckn/beckn-sandbox/blob/main/USER_GUIDE.md), [Beckn-Sandbox-webhook](https://github.com/beckn/beckn-sandbox-webhook/blob/main/README.md)
+Please Setup [Beckn-Protocol-server](https://github.com/beckn/protocol-server/blob/master/setup.md), [Beckn-Sandbox](https://github.com/beckn/beckn-sandbox/blob/main/USER_GUIDE.md), [Beckn-Sandbox-webhook](https://github.com/beckn/beckn-sandbox-webhook/blob/main/README.md) as prerequisites
+
+If you want to setup through Docker compose, please run `docker compose up`
 
 ### Backend API
 
 - Run `npm i` to install the dependencies for the backend repo
 - Run `node backend-api.js` to start backend server
-- Spin up a MongoDB local instance with port 27017 and database name 'my_database'
 - By default the API will work on port 5000
 - Run `node VC.js` to start the VC Server
 - Modify the Beckn Protocol server details in `/frontend/src/helpers/requestBodies.js`
+- Change the MongoDB connection url in backend-api.js if you do not use docker
 
 ### Frontend
 
 - Navigate to folder 'frontend' using `cd frontend` from root folder
 - Run `npm start` to launch the frontend
-
 
 ## Usage
 

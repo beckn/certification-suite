@@ -1,0 +1,33 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: my-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - certification-suite-network
+
+  frontend:
+    image: achintya1/certification-suite-frontend:latest
+    ports:
+      - "5000:5000"
+    networks:
+      - certification-suite-network
+
+  api:
+    image: achintya1/certification-suite-api:latest
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongodb
+    networks:
+      - certification-suite-network
+
+volumes:
+  mongodb-data:
+
+networks:
+  certification-suite-network:

@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
  const User = mongoose.model('User', userSchema);
 
 // Connect to MongoDB (change the connection URL to your own MongoDB instance)
-mongoose.connect('mongodb://localhost:27017/my_database', {
+mongoose.connect('mongodb://mongodb:27017/my_database', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
