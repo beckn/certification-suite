@@ -29,6 +29,7 @@ To get started with QRBeckn, follow these steps:
 
 ## Setup Instructions
 
+Please Setup [Beckn-Protocol-server](https://github.com/beckn/protocol-server/blob/master/setup.md), [Beckn-Sandbox](https://github.com/beckn/beckn-sandbox/blob/main/USER_GUIDE.md), [Beckn-Sandbox-webhook](https://github.com/beckn/beckn-sandbox-webhook/blob/main/README.md)
 
 ### Backend API
 
