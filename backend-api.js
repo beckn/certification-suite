@@ -1,7 +1,7 @@
 import express from 'express';
 import pkg from 'body-parser';
 const { json } = pkg;
-import * as jsonwebtoken from 'jsonwebtoken';
+import 'dotenv/config'
 import cors from 'cors';
 import mongoose,{connect} from 'mongoose';
 // import User from './Models/User.js'; // Replace with your User model
@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
  const User = mongoose.model('User', userSchema);
 
 // Connect to MongoDB (change the connection URL to your own MongoDB instance)
-mongoose.connect('mongodb://mongodb:27017/my_database', {
+mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -100,5 +100,5 @@ app.post('/register', async (req, res) => {
   }
 });
 
-const PORT = 5000; // Change this to the desired port number
+const PORT = process.env.PORT; // Change this to the desired port number
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

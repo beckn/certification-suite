@@ -32,6 +32,7 @@ To get started with QRBeckn, follow these steps:
 Please Setup [Beckn-Protocol-server](https://github.com/beckn/protocol-server/blob/master/setup.md), [Beckn-Sandbox](https://github.com/beckn/beckn-sandbox/blob/main/USER_GUIDE.md), [Beckn-Sandbox-webhook](https://github.com/beckn/beckn-sandbox-webhook/blob/main/README.md) as prerequisites
 
 If you want to setup through Docker compose, please run `docker compose up`
+Please change the `.env` file as per your configuration
 
 ### Backend API
 

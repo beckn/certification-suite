@@ -11,20 +11,26 @@ services:
       - certification-suite-network
 
   frontend:
-    image: achintya1/certification-suite-frontend:latest
+    image: achintya1/certification-suite-frontend:v2
     ports:
-      - "5000:5000"
+      - "3001:3001"
     networks:
       - certification-suite-network
+    env_file:  # Add this line to load environment variables from .env
+      - .env 
+    environment:
+      - PORT=3001
 
   api:
-    image: achintya1/certification-suite-api:latest
+    image: achintya1/certification-suite-api:v3
     ports:
       - "8000:8000"
     depends_on:
       - mongodb
     networks:
       - certification-suite-network
+    env_file:  # Add this line to load environment variables from .env
+      - .env 
 
 volumes:
   mongodb-data:

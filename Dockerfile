@@ -24,7 +24,3 @@ EXPOSE 8000
 # CMD ["script.sh"]
 # Start API 1 on port 3000 and API 2 on port 4000
 CMD ["sh", "-c", "node backend-api.js & node VC.js"]
-
-# CMD ["node", "backend-api.js", "&", "node", "VC.js"]
-
-# docker run -p 5000:5000 -p 8000:8000 my-multi-api-app
