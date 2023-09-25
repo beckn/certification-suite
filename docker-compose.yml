@@ -11,7 +11,7 @@ services:
       - certification-suite-network
 
   frontend:
-    image: achintya1/certification-suite-frontend:v2
+    image: achintya1/certification-suite-frontend:v2.0.1
     ports:
       - "3001:3001"
     networks:
@@ -22,7 +22,7 @@ services:
       - PORT=3001
 
   api:
-    image: achintya1/certification-suite-api:v3
+    image: achintya1/certification-suite-api:v3.0.1
     ports:
       - "8000:8000"
     depends_on:

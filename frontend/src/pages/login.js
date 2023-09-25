@@ -5,7 +5,7 @@ import { useAuth } from '../helpers/AuthContext'; // Import useAuth
 
 const Login = () => {
   const navigate = useNavigate();
-  const { user,login } = useAuth(); // Use the login function from AuthContext
+  const { login } = useAuth(); // Use the login function from AuthContext
 
   const [formData, setFormData] = useState({
     username: '',

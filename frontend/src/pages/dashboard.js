@@ -21,7 +21,6 @@ const Dashboard = () => {
   const [textInput, setTextInput] = useState('');
   const [isValidUrl, setIsValidUrl] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [verified,setStatusVerified]= useState(false);
   const [requestStatuses, setRequestStatuses] = useState(Array(4).fill('Pending'));
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
@@ -60,7 +59,6 @@ const Dashboard = () => {
         console.log(vcresponseData);
         if (response.status === 200) {
           setVCIssued(true);
-          setStatusVerified(true);
           alert("VC has been issued. Both QR code and following are the VC",response)
         } else {
           console.log('VC issuance failed');
