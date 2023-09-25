@@ -16,15 +16,18 @@ services:
       - "3001:3001"
     networks:
       - certification-suite-network
+    depends_on:
+      - api
     env_file:  # Add this line to load environment variables from .env
       - .env 
     environment:
-      - PORT=3001
+      - PORT=3001      
 
   api:
     image: achintya1/certification-suite-api:v3.0.1
     ports:
       - "8000:8000"
+      - "5000:5000"
     depends_on:
       - mongodb
     networks:
